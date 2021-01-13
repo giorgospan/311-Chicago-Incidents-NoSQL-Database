@@ -74,9 +74,9 @@ def insert(filename):
     # Drop location column [redundant]
     df.drop(columns=['location'], inplace=True)
 
-    # Remove 'T' from dates
-    df['creation_date'] = df['creation_date'].str.replace('T', ' ')
-    df['completion_date'] = df['completion_date'].str.replace('T', ' ')
+    # Convert date strings to timestamps
+    df['creation_date'] = pd.to_datetime(df['creation_date'],format='%Y-%m-%dT%H:%M:%S')
+    df['completion_date'] = pd.to_datetime(df['completion_date'],format='%Y-%m-%dT%H:%M:%S')
 
     # Applies only on './data/311-service-requests-street-lights-one-out.csv'
     df['request_type'] = df['request_type'].str.replace('Street Light Out', 'Street Light - 1/Out')
