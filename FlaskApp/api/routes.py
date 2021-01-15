@@ -1,4 +1,7 @@
-from flask import Blueprint
+from bson.json_util import dumps
+from flask import Blueprint, request
+from datetime import datetime
+from ..extensions import mongo
 
 api = Blueprint('api', __name__)
 
@@ -16,7 +19,10 @@ them in a descending order.
 
 @api.route('/query1')
 def query1():
-    return
+    fr = datetime.strptime(request.args.get('fr'), '%Y-%m-%dT%H:%M:%S')
+    to = datetime.strptime(request.args.get('to'), '%Y-%m-%dT%H:%M:%S')
+    result = mongo.db.request.find({'creation_date': {'$gte': fr, '$lt': to}})
+    return dumps(result)
 
 
 """

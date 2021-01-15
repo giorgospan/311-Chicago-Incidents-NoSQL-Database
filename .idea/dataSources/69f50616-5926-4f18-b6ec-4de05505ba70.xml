@@ -5,8 +5,124 @@
       <ServerVersion>4.2.7</ServerVersion>
     </root>
     <schema id="2" parent="1" name="admin"/>
-    <schema id="3" parent="1" name="config"/>
-    <schema id="4" parent="1" name="lcappdb"/>
-    <schema id="5" parent="1" name="local"/>
+    <schema id="3" parent="1" name="chicago_db"/>
+    <schema id="4" parent="1" name="config"/>
+    <schema id="5" parent="1" name="lcappdb"/>
+    <schema id="6" parent="1" name="local"/>
+    <table id="7" parent="3" name="inventory"/>
+    <table id="8" parent="3" name="request"/>
+    <column id="9" parent="7" name="_id">
+      <DataType>ObjectId(0)|12s</DataType>
+    </column>
+    <column id="10" parent="7" name="item">
+      <DataType>String(0)|12s</DataType>
+    </column>
+    <column id="11" parent="7" name="qty">
+      <DataType>Double(0)|8s</DataType>
+    </column>
+    <column id="12" parent="7" name="size">
+      <DataType>map(0)|4999544s</DataType>
+    </column>
+    <column id="13" parent="7" name="tags">
+      <DataType>array(0)|2003s</DataType>
+    </column>
+    <column id="14" parent="7" name="size.h">
+      <Position>1</Position>
+      <DataType>Double(0)|8s</DataType>
+    </column>
+    <column id="15" parent="7" name="size.uom">
+      <Position>2</Position>
+      <DataType>String(0)|12s</DataType>
+    </column>
+    <column id="16" parent="7" name="size.w">
+      <Position>3</Position>
+      <DataType>Double(0)|8s</DataType>
+    </column>
+    <column id="17" parent="8" name="_id">
+      <DataType>ObjectId(0)|12s</DataType>
+    </column>
+    <column id="18" parent="8" name="community_area">
+      <DataType>Double(0)|8s</DataType>
+    </column>
+    <column id="19" parent="8" name="license_plate">
+      <DataType>String(0)|12s</DataType>
+    </column>
+    <column id="20" parent="8" name="request_number">
+      <DataType>String(0)|12s</DataType>
+    </column>
+    <column id="21" parent="8" name="ssa">
+      <DataType>Double(0)|8s</DataType>
+    </column>
+    <column id="22" parent="8" name="vehicle_color">
+      <DataType>String(0)|12s</DataType>
+    </column>
+    <column id="23" parent="8" name="completion_date">
+      <Position>1</Position>
+      <DataType>Date(0)|91s</DataType>
+    </column>
+    <column id="24" parent="8" name="location">
+      <Position>1</Position>
+      <DataType>map(0)|4999544s</DataType>
+    </column>
+    <column id="25" parent="8" name="request_type">
+      <Position>1</Position>
+      <DataType>String(0)|12s</DataType>
+    </column>
+    <column id="26" parent="8" name="status">
+      <Position>1</Position>
+      <DataType>String(0)|12s</DataType>
+    </column>
+    <column id="27" parent="8" name="vehicle_model">
+      <Position>1</Position>
+      <DataType>String(0)|12s</DataType>
+    </column>
+    <column id="28" parent="8" name="creation_date">
+      <Position>2</Position>
+      <DataType>Date(0)|91s</DataType>
+    </column>
+    <column id="29" parent="8" name="location.coordinates">
+      <Position>2</Position>
+      <DataType>array(0)|2003s</DataType>
+    </column>
+    <column id="30" parent="8" name="street_address">
+      <Position>2</Position>
+      <DataType>String(0)|12s</DataType>
+    </column>
+    <column id="31" parent="8" name="ward">
+      <Position>2</Position>
+      <DataType>Double(0)|8s</DataType>
+    </column>
+    <column id="32" parent="8" name="current_activity">
+      <Position>3</Position>
+      <DataType>String(0)|12s</DataType>
+    </column>
+    <column id="33" parent="8" name="location.type">
+      <Position>3</Position>
+      <DataType>String(0)|12s</DataType>
+    </column>
+    <column id="34" parent="8" name="x_coordinate">
+      <Position>3</Position>
+      <DataType>Double(0)|8s</DataType>
+    </column>
+    <column id="35" parent="8" name="days_parked">
+      <Position>4</Position>
+      <DataType>Double(0)|8s</DataType>
+    </column>
+    <column id="36" parent="8" name="most_recent_action">
+      <Position>4</Position>
+      <DataType>String(0)|12s</DataType>
+    </column>
+    <column id="37" parent="8" name="y_coordinate">
+      <Position>4</Position>
+      <DataType>Double(0)|8s</DataType>
+    </column>
+    <column id="38" parent="8" name="police_district">
+      <Position>5</Position>
+      <DataType>Double(0)|8s</DataType>
+    </column>
+    <column id="39" parent="8" name="zip_code">
+      <Position>5</Position>
+      <DataType>Double(0)|8s</DataType>
+    </column>
   </database-model>
 </dataSource>
