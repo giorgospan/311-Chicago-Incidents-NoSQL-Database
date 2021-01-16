@@ -9,118 +9,135 @@
     <schema id="4" parent="1" name="config"/>
     <schema id="5" parent="1" name="lcappdb"/>
     <schema id="6" parent="1" name="local"/>
-    <table id="7" parent="3" name="inventory"/>
-    <table id="8" parent="3" name="request"/>
-    <column id="9" parent="7" name="_id">
+    <table id="7" parent="3" name="citizen"/>
+    <table id="8" parent="3" name="inventory"/>
+    <table id="9" parent="3" name="request"/>
+    <column id="10" parent="7" name="_id">
       <DataType>ObjectId(0)|12s</DataType>
     </column>
-    <column id="10" parent="7" name="item">
+    <column id="11" parent="7" name="email">
       <DataType>String(0)|12s</DataType>
     </column>
-    <column id="11" parent="7" name="qty">
-      <DataType>Double(0)|8s</DataType>
+    <column id="12" parent="7" name="phone">
+      <DataType>String(0)|12s</DataType>
     </column>
-    <column id="12" parent="7" name="size">
-      <DataType>map(0)|4999544s</DataType>
-    </column>
-    <column id="13" parent="7" name="tags">
+    <column id="13" parent="7" name="upvotes">
       <DataType>array(0)|2003s</DataType>
     </column>
-    <column id="14" parent="7" name="size.h">
+    <column id="14" parent="7" name="username">
       <Position>1</Position>
-      <DataType>Double(0)|8s</DataType>
-    </column>
-    <column id="15" parent="7" name="size.uom">
-      <Position>2</Position>
       <DataType>String(0)|12s</DataType>
     </column>
-    <column id="16" parent="7" name="size.w">
-      <Position>3</Position>
-      <DataType>Double(0)|8s</DataType>
-    </column>
-    <column id="17" parent="8" name="_id">
+    <column id="15" parent="8" name="_id">
       <DataType>ObjectId(0)|12s</DataType>
     </column>
-    <column id="18" parent="8" name="community_area">
+    <column id="16" parent="8" name="item">
+      <DataType>String(0)|12s</DataType>
+    </column>
+    <column id="17" parent="8" name="qty">
       <DataType>Double(0)|8s</DataType>
     </column>
-    <column id="19" parent="8" name="license_plate">
-      <DataType>String(0)|12s</DataType>
+    <column id="18" parent="8" name="size">
+      <DataType>map(0)|4999544s</DataType>
     </column>
-    <column id="20" parent="8" name="request_number">
-      <DataType>String(0)|12s</DataType>
+    <column id="19" parent="8" name="tags">
+      <DataType>array(0)|2003s</DataType>
     </column>
-    <column id="21" parent="8" name="ssa">
-      <DataType>Double(0)|8s</DataType>
-    </column>
-    <column id="22" parent="8" name="vehicle_color">
-      <DataType>String(0)|12s</DataType>
-    </column>
-    <column id="23" parent="8" name="completion_date">
+    <column id="20" parent="8" name="size.h">
       <Position>1</Position>
-      <DataType>Date(0)|91s</DataType>
+      <DataType>Double(0)|8s</DataType>
     </column>
-    <column id="24" parent="8" name="location">
+    <column id="21" parent="8" name="size.uom">
+      <Position>2</Position>
+      <DataType>String(0)|12s</DataType>
+    </column>
+    <column id="22" parent="8" name="size.w">
+      <Position>3</Position>
+      <DataType>Double(0)|8s</DataType>
+    </column>
+    <column id="23" parent="9" name="_id">
+      <DataType>ObjectId(0)|12s</DataType>
+    </column>
+    <column id="24" parent="9" name="license_plate">
+      <DataType>String(0)|12s</DataType>
+    </column>
+    <column id="25" parent="9" name="request_number">
+      <DataType>String(0)|12s</DataType>
+    </column>
+    <column id="26" parent="9" name="ssa">
+      <DataType>Double(0)|8s</DataType>
+    </column>
+    <column id="27" parent="9" name="vehicle_color">
+      <DataType>String(0)|12s</DataType>
+    </column>
+    <column id="28" parent="9" name="police_district">
+      <DataType>Double(0)|8s</DataType>
+    </column>
+    <column id="29" parent="9" name="community_area">
+      <Position>1</Position>
+      <DataType>Double(0)|8s</DataType>
+    </column>
+    <column id="30" parent="9" name="location">
       <Position>1</Position>
       <DataType>map(0)|4999544s</DataType>
     </column>
-    <column id="25" parent="8" name="request_type">
+    <column id="31" parent="9" name="request_type">
       <Position>1</Position>
       <DataType>String(0)|12s</DataType>
     </column>
-    <column id="26" parent="8" name="status">
+    <column id="32" parent="9" name="status">
       <Position>1</Position>
       <DataType>String(0)|12s</DataType>
     </column>
-    <column id="27" parent="8" name="vehicle_model">
+    <column id="33" parent="9" name="vehicle_model">
       <Position>1</Position>
       <DataType>String(0)|12s</DataType>
     </column>
-    <column id="28" parent="8" name="creation_date">
+    <column id="34" parent="9" name="completion_date">
       <Position>2</Position>
       <DataType>Date(0)|91s</DataType>
     </column>
-    <column id="29" parent="8" name="location.coordinates">
+    <column id="35" parent="9" name="location.coordinates">
       <Position>2</Position>
       <DataType>array(0)|2003s</DataType>
     </column>
-    <column id="30" parent="8" name="street_address">
+    <column id="36" parent="9" name="street_address">
       <Position>2</Position>
       <DataType>String(0)|12s</DataType>
     </column>
-    <column id="31" parent="8" name="ward">
+    <column id="37" parent="9" name="ward">
       <Position>2</Position>
       <DataType>Double(0)|8s</DataType>
     </column>
-    <column id="32" parent="8" name="current_activity">
+    <column id="38" parent="9" name="creation_date">
+      <Position>3</Position>
+      <DataType>Date(0)|91s</DataType>
+    </column>
+    <column id="39" parent="9" name="location.type">
       <Position>3</Position>
       <DataType>String(0)|12s</DataType>
     </column>
-    <column id="33" parent="8" name="location.type">
-      <Position>3</Position>
-      <DataType>String(0)|12s</DataType>
-    </column>
-    <column id="34" parent="8" name="x_coordinate">
+    <column id="40" parent="9" name="x_coordinate">
       <Position>3</Position>
       <DataType>Double(0)|8s</DataType>
     </column>
-    <column id="35" parent="8" name="days_parked">
-      <Position>4</Position>
-      <DataType>Double(0)|8s</DataType>
-    </column>
-    <column id="36" parent="8" name="most_recent_action">
+    <column id="41" parent="9" name="current_activity">
       <Position>4</Position>
       <DataType>String(0)|12s</DataType>
     </column>
-    <column id="37" parent="8" name="y_coordinate">
+    <column id="42" parent="9" name="most_recent_action">
+      <Position>4</Position>
+      <DataType>String(0)|12s</DataType>
+    </column>
+    <column id="43" parent="9" name="y_coordinate">
       <Position>4</Position>
       <DataType>Double(0)|8s</DataType>
     </column>
-    <column id="38" parent="8" name="police_district">
+    <column id="44" parent="9" name="days_parked">
       <Position>5</Position>
       <DataType>Double(0)|8s</DataType>
     </column>
-    <column id="39" parent="8" name="zip_code">
+    <column id="45" parent="9" name="zip_code">
       <Position>5</Position>
       <DataType>Double(0)|8s</DataType>
     </column>

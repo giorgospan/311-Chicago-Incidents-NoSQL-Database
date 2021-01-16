@@ -1,6 +1,7 @@
 from flask import Flask
 from .extensions import mongo
-from FlaskApp.api.routes import api
+from flaskapp.api.routes import api
+from flaskapp.site.routes import site
 
 
 def create_app():
@@ -11,5 +12,6 @@ def create_app():
     mongo.init_app(app)
 
     # Register blueprints
-    app.register_blueprint(api)
+    app.register_blueprint(site)
+    app.register_blueprint(api, url_prefix='/api')
     return app

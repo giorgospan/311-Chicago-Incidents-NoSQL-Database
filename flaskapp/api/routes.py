@@ -1,15 +1,11 @@
+from bson import ObjectId
 from bson.json_util import dumps
 from flask import Blueprint, request
 from datetime import datetime
 from ..extensions import mongo
+from ..utils.utils import *
 
 api = Blueprint('api', __name__)
-
-
-@api.route('/')
-def home():
-    return '<h1> Welcome to our Chicago 311 Service </h1>'
-
 
 """
 Find the total requests per type that were created within a specified time range and sort
@@ -19,8 +15,8 @@ them in a descending order.
 
 @api.route('/query1')
 def query1():
-    fr = datetime.strptime(request.args.get('fr'), '%Y-%m-%dT%H:%M:%S')
-    to = datetime.strptime(request.args.get('to'), '%Y-%m-%dT%H:%M:%S')
+    fr = datetime.strptime(request.args.get('fr'), DATETIME_FORMAT)
+    to = datetime.strptime(request.args.get('to'), DATETIME_FORMAT)
     result = mongo.db.request.find({'creation_date': {'$gte': fr, '$lt': to}})
     return dumps(result)
 
@@ -126,3 +122,44 @@ Find all the wards in which a given name has casted a vote for an incident takin
 @api.route('/query11')
 def query11():
     return
+
+
+"""
+Insert a new incident
+"""
+
+
+@api.route('/insert-incident', methods=['POST'])
+def insert_incident():
+    data = request.get_json()
+
+    error_message = is_valid(data)
+    if error_message:
+
+        return '<h1>Insertion Failed<h1>' + error_message
+
+    data['creation_date'] = datetime.strptime(data['creation_date'], DATETIME_FORMAT)
+    data['completion_date'] = datetime.strptime(data['completion_date'], DATETIME_FORMAT)
+    mongo.db.request.insert(data)
+    return '<h1> Successful insert </h1>'
+
+
+"""
+Cast an upvote. 
+In case the same user casts a vote for the same incident a second time, the vote should be rejected.
+"""
+
+
+@api.route('/insert-upvote', methods=['POST'])
+def insert_upvote():
+    data = request.get_json()
+
+    res = mongo.db.citizen.update_one(
+        {"_id": ObjectId(data['citizen_id'])},
+        {'$addToSet': {"upvotes": ObjectId(data['incident_id'])}}
+    )
+
+    if res.modified_count == 1:
+        return '<h1> Successful upvote </h1>'
+    else:
+        return '<h1> Upvote already exists </h1>'
