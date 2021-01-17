@@ -1,6 +1,7 @@
 from datetime import datetime
 
 DATETIME_FORMAT = '%Y-%m-%dT%H:%M:%S'
+DATE_FORMAT = '%Y-%m-%d'
 
 
 def is_valid(data):

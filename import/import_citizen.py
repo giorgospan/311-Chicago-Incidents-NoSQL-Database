@@ -35,7 +35,7 @@ fake = Faker()
 usernames = [fake.unique.user_name() for _ in range(CITIZENS)]
 
 # Create 90% distinct phone numbers [useful for query10]
-phones = [fake.unique.phone_number() for _ in range(ceil(.9 * CITIZENS))]
+phones = [fake.unique.phone_number() for _ in range(ceil(.99994 * CITIZENS))]
 
 # Create citizens
 citizens = []
