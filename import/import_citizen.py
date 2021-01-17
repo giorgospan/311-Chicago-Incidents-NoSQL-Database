@@ -12,6 +12,7 @@ Create unique upvotes for a citizen
 """
 
 
+
 def create_unique_upvotes(num):
     pipeline = [{"$sample": {"size": num}}]
     upvotes = [doc['_id'] for doc in list(db.request.aggregate(pipeline))]
