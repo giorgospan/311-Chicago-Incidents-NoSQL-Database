@@ -21,11 +21,11 @@ def insert(filename):
     new_column_names = {
 
         # Common
+        'Street Address': 'street_address',
         'Creation Date': 'creation_date',
         'Completion Date': 'completion_date',
         'Status': 'status',
         'Service Request Number': 'request_number',
-        'Street Address': 'street_address',
         'Zip Code': 'zip_code',
         'Zip Codes': 'zip_codes',
         'Ward': 'ward',
@@ -88,8 +88,19 @@ def insert(filename):
     if 'license_plate' in df.columns:
         df['license_plate'] = df[df['license_plate'].str.len() < 10]['license_plate']
 
+    # Drop rows that contain NaN Coordinates
+    df.dropna(subset=['longitude', 'latitude'], inplace=True)
+
+    # Create GeoJSON objects from long,lat
     df['location'] = [{'type': 'Point', 'coordinates': [long, lat]} for long, lat in zip(df.longitude, df.latitude)]
     df.drop(columns=['longitude', 'latitude'], inplace=True)
+
+    # Convert zipcode to string
+    mask = df['zip_code'].notna()
+    df['zip_code'] = df[df['zip_code'].notna()]['zip_code'].astype(int).apply(str)
+    if 'zip_codes' in df.columns:
+        mask = df['zip_codes'].notna()
+        df['zip_codes'] = df[df['zip_codes'].notna()]['zip_codes'].astype(int).apply(str)
 
     # Exclude empty fields
     out = [dict((k, v) for k, v in zip(df.columns, row) if v is not None and v == v) for row in df.values]

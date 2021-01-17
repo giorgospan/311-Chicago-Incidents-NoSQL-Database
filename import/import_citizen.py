@@ -34,19 +34,20 @@ fake = Faker()
 # Create unique usernames
 usernames = [fake.unique.user_name() for _ in range(CITIZENS)]
 
-# Create 90% distinct phone numbers [useful for query10]
-phones = [fake.unique.phone_number() for _ in range(ceil(.99994 * CITIZENS))]
+# Create 99% distinct phone numbers [useful for query10]
+unique_phones = ceil(.99 * CITIZENS)
+phones = [fake.unique.phone_number() for _ in range(unique_phones)]
 
 # Create citizens
 citizens = []
 for c in range(CITIZENS):
     username = usernames[c]
-    email = fake.email()
-    phone = choice(phones)
+    address = fake.street_address()
+    phone = phones[c % unique_phones]
     upvote_number = randrange(min_upvotes_per_citizen, MAX_UPVOTES_PER_CITIZEN + 1)
     upvote_list = create_unique_upvotes(upvote_number)
     citizens.append({
-        'email': email,
+        'address': address,
         'username': username,
         'phone': phone,
         'upvotes': upvote_list
