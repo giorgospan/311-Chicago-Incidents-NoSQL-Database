@@ -1,6 +1,6 @@
 from faker import Faker
 from pymongo import MongoClient
-from random import randrange
+from random import randrange, choice
 from math import ceil
 
 CITIZENS = 4000
@@ -32,14 +32,17 @@ min_upvotes_per_citizen = ceil((FACTOR * request_count) / CITIZENS)
 fake = Faker()
 
 # Create unique usernames
-usernames = [fake.unique.user_name() for i in range(CITIZENS)]
+usernames = [fake.unique.user_name() for _ in range(CITIZENS)]
+
+# Create 90% distinct phone numbers [useful for query10]
+phones = [fake.unique.phone_number() for _ in range(ceil(.9 * CITIZENS))]
 
 # Create citizens
 citizens = []
 for c in range(CITIZENS):
     username = usernames[c]
     email = fake.email()
-    phone = fake.phone_number()
+    phone = choice(phones)
     upvote_number = randrange(min_upvotes_per_citizen, MAX_UPVOTES_PER_CITIZEN + 1)
     upvote_list = create_unique_upvotes(upvote_number)
     citizens.append({
