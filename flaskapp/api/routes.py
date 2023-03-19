@@ -1,9 +1,9 @@
 from bson import ObjectId
-from bson.json_util import dumps
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 from datetime import datetime
 from ..extensions import mongo
-from ..utils.utils import *
+from ..utils.valid import is_valid
+from ..utils.constants import DATETIME_FORMAT, DATE_FORMAT
 
 api = Blueprint('api', __name__)
 
@@ -25,7 +25,8 @@ def query1():
         {'$project': {'_id': 0, 'type': '$_id', 'total_requests': 1}}
 
     ])
-    return dumps(result)
+
+    return jsonify(list(result))
 
 
 """
@@ -50,7 +51,7 @@ def query2():
         },
         {'$project': {'_id': 0, 'day': '$_id', 'total_requests': 1}}
     ])
-    return dumps(result)
+    return jsonify(list(result))
 
 
 """
@@ -91,7 +92,7 @@ def query3():
         },
         {'$project': {'_id': 0, 'zip_code': '$_id', 'types': {'$slice': ['$types', 3]}}}
     ])
-    return dumps(result)
+    return jsonify(list(result))
 
 
 """
@@ -103,7 +104,7 @@ Find the three least common wards with regards to a given service request type.
 def query4():
     given_type = request.args.get('type')
 
-    results = mongo.db.request.aggregate([
+    result = mongo.db.request.aggregate([
         {'$match': {'request_type': given_type, 'ward': {'$exists': True}}},
         {'$group': {'_id': '$ward', 'total_requests': {'$sum': 1}}},
         {'$sort': {'total_requests': 1}},
@@ -111,7 +112,7 @@ def query4():
         {'$project': {'_id': 0, 'ward': '$_id', 'total_requests': 1}}
     ])
 
-    return dumps(results)
+    return jsonify(list(result))
 
 
 """
@@ -123,7 +124,7 @@ Find the average completion time per service request for a specified date range.
 def query5():
     fr = datetime.strptime(request.args.get('fr'), DATETIME_FORMAT)
     to = datetime.strptime(request.args.get('to'), DATETIME_FORMAT)
-    results = mongo.db.request.aggregate([
+    result = mongo.db.request.aggregate([
 
         {'$match': {'creation_date': {'$gte': fr, '$lt': to}}},
         {
@@ -142,7 +143,7 @@ def query5():
         {'$project': {'_id': 0, 'request_type': '$_id', 'avg_days': {'$floor': '$avg_days'}}}
     ])
 
-    return dumps(results)
+    return jsonify(list(result))
 
 
 """
@@ -159,7 +160,7 @@ def query6():
     ymax = float(request.args.get('ymax'))
     day = datetime.strptime(request.args.get('day'), DATE_FORMAT)
 
-    results = mongo.db.request.aggregate([
+    result = mongo.db.request.aggregate([
 
         {
             '$match':
@@ -174,7 +175,7 @@ def query6():
         {'$project': {'_id': 0, 'request_type': '$_id', 'total_requests': 1}}
     ])
 
-    return dumps(results)
+    return jsonify(list(result))
 
 
 """
@@ -185,7 +186,7 @@ Find the fifty most upvoted service requests for a specified day.
 @api.route('/query7')
 def query7():
     day = datetime.strptime(request.args.get('day'), DATE_FORMAT)
-    results = mongo.db.request.aggregate([
+    result = mongo.db.request.aggregate([
 
         {'$match': {'creation_date': day}},
         {'$project': {'_id': 1}},
@@ -203,7 +204,7 @@ def query7():
         {'$limit': 50}
     ])
 
-    return dumps(results)
+    return jsonify(list(result))
 
 
 """
@@ -213,14 +214,14 @@ Find the fifty most active citizens, with regard to the total number of upvotes.
 
 @api.route('/query8')
 def query8():
-    results = mongo.db.citizen.aggregate([
+    result = mongo.db.citizen.aggregate([
 
         {'$project': {'username': 1, 'totalupvotes': {'$size': '$upvotes'}}},
         {'$sort': {'totalupvotes': -1}},
         {'$limit': 50}
     ])
 
-    return dumps(results)
+    return jsonify(list(result))
 
 
 """
@@ -231,7 +232,7 @@ upvoted an incidents.
 
 @api.route('/query9')
 def query9():
-    results = mongo.db.citizen.aggregate([
+    result = mongo.db.citizen.aggregate([
         {
             '$lookup':
                 {
@@ -254,7 +255,7 @@ def query9():
         {'$limit': 50}
     ])
 
-    return dumps(results)
+    return jsonify(list(result))
 
 
 """
@@ -265,7 +266,7 @@ names.
 
 @api.route('/query10')
 def query10():
-    results = mongo.db.citizen.aggregate([
+    result = mongo.db.citizen.aggregate([
 
         {
             '$group': {
@@ -298,7 +299,7 @@ def query10():
         }
     ])
 
-    return dumps(results)
+    return jsonify(list(result))
 
 
 """
@@ -308,10 +309,9 @@ Find all the wards in which a given name has casted a vote for an incident takin
 
 @api.route('/query11')
 def query11():
-
     username = request.args.get('username')
 
-    results = mongo.db.citizen.aggregate([
+    result = mongo.db.citizen.aggregate([
         {'$match': {'username': username}},
         {
             '$lookup':
@@ -327,7 +327,7 @@ def query11():
         {'$project': {'_id': 0, 'ward': '$_id'}}
     ])
 
-    return dumps(results)
+    return jsonify(list(result))
 
 
 """
@@ -341,12 +341,18 @@ def insert_incident():
 
     error_message = is_valid(data)
     if error_message:
-        return '<h1>Insertion Failed<h1>' + error_message
+        return jsonify({
+            'message': 'Insertion Failed: ' + error_message,
+            'data': data
+        })
 
     data['creation_date'] = datetime.strptime(data['creation_date'], DATETIME_FORMAT)
     data['completion_date'] = datetime.strptime(data['completion_date'], DATETIME_FORMAT)
-    mongo.db.request.insert(data)
-    return '<h1> Successful insert </h1>'
+    mongo.db.request.insert_one(data)
+    return jsonify({
+        'message': 'Successful Insertion',
+        'data': data
+    })
 
 
 """
@@ -365,6 +371,12 @@ def insert_upvote():
     )
 
     if res.modified_count == 1:
-        return '<h1> Successful upvote </h1>'
+        return jsonify({
+            'message': 'Successful upvote',
+            'data': data
+        })
     else:
-        return '<h1> Upvote already exists </h1>'
+        return jsonify({
+            'message': 'Upvote already exists',
+            'data': data
+        })

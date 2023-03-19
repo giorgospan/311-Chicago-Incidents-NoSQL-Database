@@ -137,6 +137,7 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
+.idea/
 
 ### Ignore everything in parser dir except for .py files ###
 /import/*

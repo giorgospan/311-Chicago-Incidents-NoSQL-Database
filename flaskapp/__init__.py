@@ -2,6 +2,7 @@ from flask import Flask
 from .extensions import mongo
 from flaskapp.api.routes import api
 from flaskapp.site.routes import site
+from flaskapp.utils.CustomJSONEncoder import CustomJSONEncoder
 
 
 def create_app():
@@ -14,4 +15,8 @@ def create_app():
     # Register blueprints
     app.register_blueprint(site)
     app.register_blueprint(api, url_prefix='/api')
+
+    # Register custom JSONEncoder
+    app.json_encoder = CustomJSONEncoder
+
     return app
